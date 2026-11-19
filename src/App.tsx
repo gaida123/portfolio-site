@@ -88,40 +88,43 @@ function Clock() {
   return <time className="clock" aria-hidden="true">{now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</time>
 }
 
-/** Soft crossfade through site.locationLines in the header status slot. */
+/** Vertical swap through site.locationLines in the header status slot. */
 function LocationStatus() {
   const lines = site.locationLines
   const [index, setIndex] = useState(0)
-  const [visible, setVisible] = useState(true)
+  const [phase, setPhase] = useState<'in' | 'out' | 'prep'>('in')
 
   useEffect(() => {
     if (lines.length < 2) return
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const hold = reduced ? 5000 : 3200
-    const fade = reduced ? 0 : 280
-    let fadeTimer = 0
+    const holdMs = reduced ? 5000 : 3400
+    const swapMs = reduced ? 0 : 320
+    let swapTimer = 0
+    let enterTimer = 0
 
-    const tick = setInterval(() => {
-      if (!fade) {
+    const tick = window.setInterval(() => {
+      if (!swapMs) {
         setIndex((i) => (i + 1) % lines.length)
         return
       }
-      setVisible(false)
-      fadeTimer = window.setTimeout(() => {
+      setPhase('out')
+      swapTimer = window.setTimeout(() => {
         setIndex((i) => (i + 1) % lines.length)
-        setVisible(true)
-      }, fade)
-    }, hold)
+        setPhase('prep') // sit below, no transition
+        enterTimer = window.setTimeout(() => setPhase('in'), 20)
+      }, swapMs)
+    }, holdMs)
 
     return () => {
-      clearInterval(tick)
-      clearTimeout(fadeTimer)
+      window.clearInterval(tick)
+      window.clearTimeout(swapTimer)
+      window.clearTimeout(enterTimer)
     }
   }, [lines.length])
 
   return (
     <p className="header-location" aria-live="polite">
-      <span className={`header-location-text${visible ? ' is-in' : ''}`}>{lines[index]}</span>
+      <span className={`header-location-text is-${phase}`}>{lines[index]}</span>
     </p>
   )
 }
@@ -163,14 +166,14 @@ function PromptBar() {
   const onSubPage = useLocation().pathname !== '/'
   return (
     <footer className="prompt">
-      <button className="hint" onClick={openMenu}>
-        <img src="/assets/glyph-menu.svg" alt="" aria-hidden="true" />
+      <button className="hint" onClick={openMenu} aria-keyshortcuts="q">
+        <span className="face" aria-hidden="true">Q</span>
         {prompts.menu}
       </button>
       <div className="hints">
         {hasItems && (
           <span className="hint key-hint">
-            <img src="/assets/glyph-dpad.svg" alt="" aria-hidden="true" />
+            <span className="move-key" aria-hidden="true">↑</span>
             {prompts.move}
           </span>
         )}

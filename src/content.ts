@@ -61,7 +61,7 @@ export const search = {
   hintOpen: 'Open',
   pageDetail: 'Go to page',
   // Shown before anything is typed. Each must match a title in the search index exactly.
-  suggestions: ['Etika', 'PolterGuide', 'Work', 'About', `Email ${site.firstName}`],
+  suggestions: ['Etika', 'Work', 'About', `Email ${site.firstName}`],
   // Extra words that should find an entry (key = the entry's title).
   aliases: {
     Home: 'explore reading start',

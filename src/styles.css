@@ -192,27 +192,31 @@ main h1:focus-visible {
 .header-location {
   margin: 0;
   min-width: 18.5em; /* longest status line; keeps clock/avatar from shifting */
+  height: 1.2em;
+  overflow: hidden;
   font: var(--type-meta);
-  line-height: 1;
+  line-height: 1.2;
   color: var(--text-secondary);
   text-align: right;
   white-space: nowrap;
 }
 .header-location-text {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(3px);
-  transition:
-    opacity 280ms ease,
-    transform 280ms ease;
+  display: block;
+  transform: translateY(0);
+  transition: transform 320ms ease;
+}
+.header-location-text.is-out {
+  transform: translateY(-110%);
+}
+.header-location-text.is-prep {
+  transform: translateY(110%);
+  transition: none;
 }
 .header-location-text.is-in {
-  opacity: 1;
-  transform: none;
+  transform: translateY(0);
 }
 @media (prefers-reduced-motion: reduce) {
   .header-location-text {
-    transform: none;
     transition: none;
   }
 }
@@ -293,6 +297,18 @@ span.hint {
   color: var(--bg-base);
   font: var(--type-meta);
 }
+/* One square key chip for Move (keyboard-style, not the round face buttons) */
+.move-key {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: var(--text-primary);
+  color: var(--bg-base);
+  font: var(--type-meta);
+  line-height: 1;
+}
 
 /* ---------- Menu overlay (no Figma frame: built from the same tokens) ---------- */
 .menu {
@@ -305,8 +321,9 @@ span.hint {
   position: absolute;
   inset: 0 auto 0 0;
   width: calc(var(--gutter) + 360px);
+  /* Left: gutter + 54 + item/label 18px pad = 72, same as .home / .sub content */
   /* 7.5px bottom: the 42px Close hint is centred on the prompt bar's row, where the Menu hint it replaces sits */
-  padding: 132px 40.5px 7.5px calc(var(--gutter) + 40.5px);
+  padding: 132px 40.5px 7.5px calc(var(--gutter) + 54px);
   display: flex;
   flex-direction: column;
   background: var(--bg-panel);
@@ -1092,8 +1109,11 @@ strong {
   text-transform: none;
 }
 /* Rows inset 6px in the panel and pad 12px, so their words share the 18px edge of the field and label */
+/* Cap at 4 rows (title 21 + detail 18 + pad 18) so the panel stays above a mobile keyboard */
 .search-list {
+  max-height: calc(4 * (21px + 18px + 18px) + 6px);
   padding: 0 6px 6px;
+  overflow-y: auto;
 }
 .search-row {
   display: flex;
@@ -1213,8 +1233,9 @@ strong {
     position: fixed;
   }
   .menu-panel {
-    width: min(360px, 86vw);
-    padding: 72px 20px 32px;
+    width: 55vw;
+    /* 2 + 18 item pad = 20, same as .home / .sub */
+    padding: 72px 20px 32px 2px;
     overflow-y: auto;
   }
 
@@ -1454,10 +1475,6 @@ strong {
   .search-panel {
     top: 12px;
     width: calc(100% - 24px);
-  }
-  .search-list {
-    max-height: calc(100dvh - 160px);
-    overflow-y: auto;
   }
   .search-foot {
     display: none;

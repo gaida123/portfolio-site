@@ -5,6 +5,7 @@ test('focus and input-mode logic', () => {
   // Keys
   expect(keyAction({ key: 'ArrowDown' }, false)).toBe('down')
   expect(keyAction({ key: 'A' }, false)).toBe('open')
+  expect(keyAction({ key: 'Q' }, false)).toBe('menu')
   expect(keyAction({ key: 'Backspace' }, false)).toBe('back')
   expect(keyAction({ key: 'Backspace' }, true)).toBeNull() // typing in an input
   expect(keyAction({ key: 'a', ctrlKey: true }, false)).toBeNull()

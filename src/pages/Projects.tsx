@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { pageCtas, projects } from '../content'
 import { useFocus } from '../focus-context'
+import { peekProjectSlug, takeProjectSlug } from '../project-return'
 import { Heading } from '../ui'
 
 export default function Projects() {
@@ -12,7 +13,7 @@ export default function Projects() {
   // Search can also send you to a slide, by slug or name, even when you are already here.
   const location = useLocation()
   const wanted = () => {
-    const from = location.state?.slug
+    const from = location.state?.slug ?? peekProjectSlug()
     return from ? items.findIndex((p) => p.slug === from || p.name === from) : -1
   }
   const [index, setIndex] = useState(() => Math.max(0, wanted()))
@@ -41,9 +42,11 @@ export default function Projects() {
   })
 
   useEffect(() => {
-    if (wanted() >= 0) {
+    const i = wanted()
+    if (i >= 0) {
+      takeProjectSlug()
       setInstant(true)
-      setIndex(wanted())
+      setIndex(i)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.key])

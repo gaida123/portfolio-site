@@ -2,7 +2,7 @@
 
 export type Mode = 'pointer' | 'keyboard'
 export type Dir = 'up' | 'down' | 'left' | 'right'
-export type Action = Dir | 'open' | 'alt' | 'back' | 'mail' | 'tab'
+export type Action = Dir | 'open' | 'alt' | 'back' | 'mail' | 'menu' | 'tab'
 
 const KEYS: Record<string, Action> = {
   ArrowUp: 'up',
@@ -16,6 +16,7 @@ const KEYS: Record<string, Action> = {
   Escape: 'back',
   Backspace: 'back',
   y: 'mail',
+  q: 'menu',
   Tab: 'tab',
 }
 

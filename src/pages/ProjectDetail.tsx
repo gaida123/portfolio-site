@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { projectDetails, projectPage, projects } from '../content'
 import { useFocus } from '../focus-context'
+import { stashProjectSlug } from '../project-return'
 
 export default function ProjectDetail() {
   const { slug = '' } = useParams()
@@ -44,7 +45,15 @@ function Detail({ slug }: { slug: string }) {
   useEffect(() => {
     keys.current = (action) => {
       if (action === 'back') {
-        navigate('/projects', { state: { slug } })
+        // Prefer history back so Home → Projects → Detail becomes Home → Projects
+        // (not Home → Projects → Projects). Cold-opened detail URLs have no prior entry.
+        const idx = (window.history.state as { idx?: number } | null)?.idx ?? 0
+        if (idx > 0) {
+          stashProjectSlug(slug)
+          navigate(-1)
+        } else {
+          navigate('/projects', { state: { slug } })
+        }
         return true
       }
       if (action === 'alt') {

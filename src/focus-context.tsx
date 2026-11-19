@@ -146,6 +146,9 @@ export function FocusProvider({ children }: { children: ReactNode }) {
       e.preventDefault()
       if (action === 'mail') {
         window.location.href = `mailto:${site.email}`
+      } else if (action === 'menu') {
+        if (menuOpen) closeMenu()
+        else openMenu()
       } else if (action === 'back') {
         if (menuOpen) closeMenu()
         else if (pathname !== '/') back()

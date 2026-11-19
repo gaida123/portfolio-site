@@ -9,6 +9,7 @@ export default function Search({ onClose }: { onClose: () => void }) {
   const [query, setQuery] = useState('')
   const [picked, setPicked] = useState(0)
   const input = useRef<HTMLInputElement>(null)
+  const list = useRef<HTMLDivElement>(null)
 
   const results = find(query)
   const typed = query.trim() !== ''
@@ -17,6 +18,15 @@ export default function Search({ onClose }: { onClose: () => void }) {
   const label = !typed ? search.suggested : results.length ? search.results : `${search.none} “${query.trim()}”. ${search.tryInstead}`
 
   useEffect(() => input.current?.focus(), [])
+  useEffect(() => {
+    const el = list.current
+    const row = el?.querySelector<HTMLElement>(`#search-row-${picked}`)
+    if (!el || !row) return
+    const listBox = el.getBoundingClientRect()
+    const rowBox = row.getBoundingClientRect()
+    if (rowBox.top < listBox.top) el.scrollTop -= listBox.top - rowBox.top
+    else if (rowBox.bottom > listBox.bottom) el.scrollTop += rowBox.bottom - listBox.bottom
+  }, [picked])
 
   const open = (e: Entry) => {
     onClose()
@@ -65,7 +75,7 @@ export default function Search({ onClose }: { onClose: () => void }) {
         <p className={`search-label${typed && !results.length ? ' search-note' : ''}`} aria-live="polite">
           {label}
         </p>
-        <div className="search-list" id="search-list" role="listbox" aria-label={label}>
+        <div ref={list} className="search-list" id="search-list" role="listbox" aria-label={label}>
           {rows.map((e, i) => (
             // The highlight follows `picked` only (keys and pointer share it), never :hover.
             <button
