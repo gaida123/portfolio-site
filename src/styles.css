@@ -1350,7 +1350,7 @@ strong {
   .carousel {
     position: static;
     display: grid;
-    gap: 16px;
+    gap: 28px;
     height: auto;
     padding: 0 20px 28px;
     overflow: visible;
@@ -1358,6 +1358,8 @@ strong {
   .slide,
   .slide.near {
     position: static;
+    display: flex;
+    flex-direction: column-reverse; /* image first, text under — still one card */
     width: auto;
     height: auto;
     translate: none;
@@ -1367,7 +1369,7 @@ strong {
   .slide-text {
     position: static;
     width: auto;
-    padding: 24px 20px;
+    padding: 32px 24px;
   }
   .slide-panel {
     position: relative;

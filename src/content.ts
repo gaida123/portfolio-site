@@ -158,7 +158,7 @@ export const work = {
       company: 'Didik Elektronik',
       role: 'Web Developer (Freelance)',
       dates: 'Dec 2024 – Aug 2025',
-      place: 'Remote from Bali',
+      place: 'Remote from Bali, Indonesia',
       logo: '/assets/logo-didik.webp',
       summary:
         'Built a **full-stack e-commerce platform** with multi-courier shipping, and set up CI/CD that cut deploys from **5 minutes to 30 seconds**.',
@@ -167,7 +167,7 @@ export const work = {
       company: 'PT. Asia Garment Internasional',
       role: 'Full-Stack Web Developer',
       dates: 'Aug 2024 – Jul 2025',
-      place: 'Bali',
+      place: 'Bali, Indonesia',
       logo: '/assets/logo-sarong.webp', // Sarong Wholesale, the company's brand
       summary:
         'Solo-built a production **B2B wholesale e-commerce platform**, and cut order errors **30%** with an ACID-compliant checkout.',

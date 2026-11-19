@@ -112,6 +112,9 @@
     height: 54px;
     padding: 6px 9px;
   }
+  .wk-job h2 {
+    font: 600 17px/23px var(--font-ui); /* type-title 21px − 4 */
+  }
   .wk-when {
     grid-column: 1 / -1;
     grid-row: 2;
@@ -120,8 +123,18 @@
     gap: 0 12px;
     padding-top: 0;
     text-align: left;
+    font: var(--type-caption);
+    color: var(--text-secondary);
+  }
+  .wk-when .wk-sub {
+    margin-left: auto; /* place sits on the right edge */
+    font: inherit; /* same quiet size as the dates */
   }
   .wk-summary {
     grid-column: 1 / -1;
+    padding-bottom: 32px;
+  }
+  .wk-job:last-child .wk-summary {
+    padding-bottom: 0; /* awards margin-top owns the space above the rule */
   }
 }
