@@ -1,0 +1,124 @@
+/* ---------- Work: experience (main column) + awards (side column), one row language for both ---------- */
+.wk {
+  display: grid;
+  grid-template-columns: 1fr 486px; /* wide enough for the longest award on one line */
+  column-gap: 72px;
+  align-items: start;
+  align-content: start;
+}
+.wk::before {
+  grid-column: 1 / -1; /* the shared hairline spans both columns */
+}
+.wk-list {
+  display: grid;
+  gap: 9px;
+  margin-top: 30px;
+  padding: 0; /* the global reset only covers ul */
+  list-style: none;
+}
+
+/* A row is a raised panel with a 12px inset, like a library or achievements list */
+.wk-row {
+  display: grid;
+  column-gap: 18px;
+  padding: 12px;
+  background: var(--bg-raised);
+  font: var(--type-body);
+}
+.wk-sub {
+  color: var(--text-secondary);
+}
+
+/* Job: logo plate | company + role | dates, with the achievement under the text */
+.wk-job {
+  grid-template-columns: 144px 1fr auto;
+  grid-template-rows: auto 1fr;
+  row-gap: 12px;
+}
+.wk-plate {
+  grid-row: 1 / -1;
+  height: 81px;
+  padding: 9px 12px;
+  background: var(--text-primary);
+}
+.wk-plate img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+/* The Sarong logo has its own opaque off-white ground: let it fill the plate instead of sitting on it */
+.wk-plate:has(img[src*='sarong']) {
+  padding: 0;
+}
+.wk-plate img[src*='sarong'] {
+  object-fit: cover;
+}
+.wk-job-head {
+  display: grid;
+  gap: 4.5px;
+}
+.wk-job h2 {
+  font: var(--type-title);
+}
+.wk-when {
+  display: grid;
+  gap: 4.5px;
+  padding-top: 2px; /* first line sits on the company name's baseline */
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.wk-summary {
+  grid-column: 2 / -1;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+/* Award: placement + year on one line, event · project under it */
+.wk-award {
+  grid-template-columns: 1fr auto;
+  row-gap: 4.5px;
+  align-items: baseline;
+}
+.wk-award h3 {
+  font: var(--type-title);
+}
+.wk-year {
+  font-variant-numeric: tabular-nums;
+}
+.wk-award .wk-sub {
+  grid-column: 1 / -1;
+}
+
+/* ---------- Below 1280px: one column ---------- */
+@media (max-width: 1279.98px) {
+  .wk {
+    grid-template-columns: 1fr;
+  }
+  .wk-awards {
+    margin-top: 40px;
+  }
+  .wk-list {
+    margin-top: 20px;
+  }
+  .wk-job {
+    grid-template-columns: 96px 1fr;
+    grid-template-rows: none;
+  }
+  .wk-plate {
+    grid-row: auto;
+    height: 54px;
+    padding: 6px 9px;
+  }
+  .wk-when {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0 12px;
+    padding-top: 0;
+    text-align: left;
+  }
+  .wk-summary {
+    grid-column: 1 / -1;
+  }
+}

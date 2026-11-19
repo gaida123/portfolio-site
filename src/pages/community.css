@@ -1,0 +1,111 @@
+/* ---------- Community: one shelf of four equal cards, newest first ---------- */
+.cm-shelf {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  align-items: stretch;
+  margin-top: 48px;
+}
+.cm-card {
+  --focus-scale: 1.03; /* the ring grows with the card, as on Home */
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-panel);
+  transition: transform var(--card-ms) ease-out;
+}
+html:not([data-touch='true']) .cm-card[data-focused] {
+  z-index: 1;
+  transform: scale(var(--focus-scale));
+}
+
+/* 4:3 cover. No photo: the real name in display type on the raised surface; a photo slots in behind it. */
+.cm-cover {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  aspect-ratio: 4 / 3; /* square covers read as empty blocks while three have no photo */
+  overflow: hidden;
+  padding: 18px;
+  background: var(--bg-raised);
+}
+.cm-cover img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Legibility scrim for the name over a photo */
+.cm-has-photo::after {
+  content: '';
+  position: absolute;
+  inset: 40% 0 0;
+  background: linear-gradient(to bottom, rgb(11 16 23 / 0), rgb(11 16 23 / 0.88));
+}
+.cm-name {
+  position: relative;
+  z-index: 1;
+  font: 400 30px/1.05 var(--font-display);
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.cm-body {
+  padding: 18px;
+}
+.cm-role {
+  font: var(--type-meta);
+}
+.cm-dates {
+  margin-top: 4.5px;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+.cm-blurb {
+  margin-top: 12px;
+  font: var(--type-small);
+  color: var(--text-secondary);
+}
+
+/* Entrance: the cards fade in left to right, quickly. Desktop only, and never with reduced motion. */
+@media (min-width: 1280px) and (prefers-reduced-motion: no-preference) {
+  .cm-card {
+    animation: cm-in 240ms ease-out backwards;
+    animation-delay: calc(var(--i) * 60ms);
+  }
+}
+@keyframes cm-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cm-card {
+    --focus-scale: 1;
+    transition: none;
+  }
+}
+
+/* Below 1280px: a stacked list. Covers without a photo shrink to the name. */
+@media (max-width: 1279.98px) {
+  .cm-shelf {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 28px;
+  }
+  .cm-cover {
+    aspect-ratio: auto;
+    padding-top: 48px;
+  }
+  .cm-has-photo {
+    aspect-ratio: 3 / 2;
+  }
+  .cm-name {
+    font-size: 27px;
+  }
+  .cm-blurb {
+    font-size: 16.5px;
+  }
+}
