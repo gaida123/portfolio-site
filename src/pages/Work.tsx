@@ -9,7 +9,7 @@ export default function Work() {
   return (
     <div className="frame sub wk">
       <section className="wk-jobs">
-        <Heading label={work.label} subtitle={work.subtitle} />
+        <Heading label={work.label} />
         <ol className="wk-list">
           {work.jobs.map((j) => (
             <li key={j.company} className="wk-row wk-job">
@@ -30,7 +30,7 @@ export default function Work() {
         </ol>
       </section>
       <section className="wk-awards">
-        <Heading as="h2" label={work.awardsLabel} subtitle={work.awardsSubtitle} />
+        <Heading as="h2" label={work.awardsLabel} />
         <ul className="wk-list">
           {work.awards.map((a) => {
             const body = (

@@ -1,5 +1,6 @@
 import './community.css'
 import type { CSSProperties } from 'react'
+import { Link } from 'react-router-dom'
 import { community } from '../content'
 import { useFocus } from '../focus-context'
 import { Heading, rich } from '../ui'
@@ -9,7 +10,7 @@ export default function Community() {
 
   return (
     <div className="frame sub">
-      <Heading label={community.label} subtitle={community.subtitle} />
+      <Heading label={community.label} />
       <ul className="cm-shelf">
         {community.stops.map((s, i) => (
           // Focus lands on the newest entry, the first one in reading order.
@@ -22,7 +23,13 @@ export default function Community() {
           >
             {/* Without a photo the cover is the organisation's name set in display type */}
             <div className={`cm-cover${s.photo ? ' cm-has-photo' : ''}`}>
-              {s.photo && <img src={s.photo} alt="" />}
+              {s.photo && (
+                <img
+                  src={s.photo}
+                  alt=""
+                  style={s.photoPosition ? { objectPosition: s.photoPosition } : undefined}
+                />
+              )}
               <h2 className="cm-name">{s.name}</h2>
             </div>
             <div className="cm-body">
@@ -33,6 +40,18 @@ export default function Community() {
           </li>
         ))}
       </ul>
+      <div className="about-ctas about-ctas-center community-ctas">
+        {community.ctas.map((c) => (
+          <Link
+            key={c.to}
+            to={c.to}
+            className={`pill-btn about-cta about-cta-${c.tone}`}
+            {...focusProps(`community:${c.tone}`)}
+          >
+            {c.label}
+          </Link>
+        ))}
+      </div>
     </div>
   )
 }

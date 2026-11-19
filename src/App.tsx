@@ -88,6 +88,44 @@ function Clock() {
   return <time className="clock" aria-hidden="true">{now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}</time>
 }
 
+/** Soft crossfade through site.locationLines in the header status slot. */
+function LocationStatus() {
+  const lines = site.locationLines
+  const [index, setIndex] = useState(0)
+  const [visible, setVisible] = useState(true)
+
+  useEffect(() => {
+    if (lines.length < 2) return
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const hold = reduced ? 5000 : 3200
+    const fade = reduced ? 0 : 280
+    let fadeTimer = 0
+
+    const tick = setInterval(() => {
+      if (!fade) {
+        setIndex((i) => (i + 1) % lines.length)
+        return
+      }
+      setVisible(false)
+      fadeTimer = window.setTimeout(() => {
+        setIndex((i) => (i + 1) % lines.length)
+        setVisible(true)
+      }, fade)
+    }, hold)
+
+    return () => {
+      clearInterval(tick)
+      clearTimeout(fadeTimer)
+    }
+  }, [lines.length])
+
+  return (
+    <p className="header-location" aria-live="polite">
+      <span className={`header-location-text${visible ? ' is-in' : ''}`}>{lines[index]}</span>
+    </p>
+  )
+}
+
 function Header({ onSearch }: { onSearch: () => void }) {
   const { focusProps, back } = useFocus()
   const onSubPage = useLocation().pathname !== '/'
@@ -107,10 +145,7 @@ function Header({ onSearch }: { onSearch: () => void }) {
         </button>
       </div>
       <div className="status">
-        <img src="/assets/icon-settings.svg" alt="" aria-hidden="true" />
-        <img src="/assets/icon-bell.svg" alt="" aria-hidden="true" />
-        <img src="/assets/icon-wifi.svg" alt="" aria-hidden="true" />
-        <span className="battery" aria-hidden="true" />
+        <LocationStatus />
         <Clock />
         <Link to="/" className="avatar" aria-label="Home">
           <img src="/assets/backdrop.webp" alt="" />

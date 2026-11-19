@@ -57,21 +57,9 @@ export default function Projects() {
     <>
       <div className="frame sub projects">
         <div className="projects-head">
-          <Heading label={projects.label} subtitle={projects.subtitle} />
-          <a
-            className="pill-btn view-all"
-            href={projects.viewAll.href}
-            target="_blank"
-            rel="noreferrer"
-            {...focusProps('view-all')}
-          >
-            {projects.viewAll.label}
-          </a>
+          <Heading label={projects.label} />
         </div>
         <div className="carousel-controls">
-          <button className="round" aria-label={projects.prev} onClick={() => go(index - 1)}>
-            <img src="/assets/chevron-prev.svg" alt="" />
-          </button>
           <div className="dots" aria-hidden="true">
             {items.map((p, i) => (
               <button key={p.name} tabIndex={-1} onClick={() => go(i)}>
@@ -79,9 +67,6 @@ export default function Projects() {
               </button>
             ))}
           </div>
-          <button className="round" aria-label={projects.next} onClick={() => go(index + 1)}>
-            <img src="/assets/chevron-next.svg" alt="" />
-          </button>
         </div>
       </div>
 
@@ -132,6 +117,18 @@ export default function Projects() {
             </div>
           )
         })}
+      </div>
+      <div className="about-ctas about-ctas-center projects-ctas">
+        {projects.ctas.map((c) => (
+          <Link
+            key={c.to}
+            to={c.to}
+            className={`pill-btn about-cta about-cta-${c.tone}`}
+            {...focusProps(`projects:${c.tone}`)}
+          >
+            {c.label}
+          </Link>
+        ))}
       </div>
     </>
   )

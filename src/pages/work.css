@@ -1,45 +1,51 @@
-/* ---------- Work: experience (main column) + awards (side column), one row language for both ---------- */
+/* ---------- Work: experience full width, awards stacked below ---------- */
 .wk {
   display: grid;
-  grid-template-columns: 1fr 486px; /* wide enough for the longest award on one line */
-  column-gap: 72px;
+  grid-template-columns: 1fr;
   align-items: start;
   align-content: start;
 }
-.wk::before {
-  grid-column: 1 / -1; /* the shared hairline spans both columns */
+.wk-awards {
+  margin-top: 48px;
+  padding-top: 48px;
+  border-top: 1px solid var(--line-subtle);
 }
 .wk-list {
   display: grid;
-  gap: 9px;
+  gap: 28px;
   margin-top: 30px;
   padding: 0; /* the global reset only covers ul */
   list-style: none;
 }
 
-/* A row is a raised panel with a 12px inset, like a library or achievements list */
+/* Text-only rows — no card chrome; light type on the dark page */
 .wk-row {
   display: grid;
   column-gap: 18px;
-  padding: 12px;
-  background: var(--bg-raised);
+  padding: 0;
+  background: none;
+  color: var(--text-primary);
   font: var(--type-body);
 }
 .wk-sub {
   color: var(--text-secondary);
+}
+.wk-row strong {
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 /* Job: logo plate | company + role | dates, with the achievement under the text */
 .wk-job {
   grid-template-columns: 144px 1fr auto;
   grid-template-rows: auto 1fr;
-  row-gap: 12px;
+  row-gap: 10px;
 }
 .wk-plate {
   grid-row: 1 / -1;
   height: 81px;
   padding: 9px 12px;
-  background: var(--text-primary);
+  background: var(--text-primary); /* light plate so logos stay readable */
 }
 .wk-plate img {
   width: 100%;
@@ -69,7 +75,7 @@
 }
 .wk-summary {
   grid-column: 2 / -1;
-  line-height: 1.4;
+  line-height: 1.45;
   color: var(--text-secondary);
 }
 
@@ -89,11 +95,8 @@
   grid-column: 1 / -1;
 }
 
-/* ---------- Below 1280px: one column ---------- */
+/* ---------- Below 1280px ---------- */
 @media (max-width: 1279.98px) {
-  .wk {
-    grid-template-columns: 1fr;
-  }
   .wk-awards {
     margin-top: 40px;
   }

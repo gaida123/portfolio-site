@@ -1,18 +1,17 @@
+import { Link } from 'react-router-dom'
 import { about } from '../content'
 import { useFocus } from '../focus-context'
-import { Heading } from '../ui'
 
 export default function About() {
   const { focusProps } = useFocus()
   return (
     <>
       <div className="about-photo">
-        <img src="/assets/about-portrait.webp" alt={about.photoAlt} />
+        <img src="/assets/about-portrait.jpg" alt={about.photoAlt} />
       </div>
       <div className="frame sub about">
-        <Heading label={about.label} subtitle={about.subtitle} />
-        <h2 className="about-name">{about.name}</h2>
-        <p className="about-bio">{about.bio}</p>
+        <h1 className="about-name">{about.name}</h1>
+        <p className="about-lead">{about.subtitle}</p>
         <dl className="facts about-facts">
           {about.facts.map((f) => (
             <div key={f.label}>
@@ -54,6 +53,18 @@ export default function About() {
             ))}
           </dl>
         </section>
+        <div className="about-ctas">
+          {about.ctas.map((c) => (
+            <Link
+              key={c.to}
+              to={c.to}
+              className={`pill-btn about-cta about-cta-${c.tone}`}
+              {...focusProps(`about:${c.tone}`)}
+            >
+              {c.label}
+            </Link>
+          ))}
+        </div>
       </div>
     </>
   )

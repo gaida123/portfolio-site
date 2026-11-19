@@ -1,11 +1,19 @@
 import type { ReactNode } from 'react'
 
-/** The one heading style for every sub-page: caps label + one-line subtitle. */
-export function Heading({ as: Tag = 'h1', label, subtitle }: { as?: 'h1' | 'h2'; label: string; subtitle: string }) {
+/** The one heading style for every sub-page: caps label + optional one-line subtitle. */
+export function Heading({
+  as: Tag = 'h1',
+  label,
+  subtitle,
+}: {
+  as?: 'h1' | 'h2'
+  label: string
+  subtitle?: string
+}) {
   return (
     <header className="heading">
       <Tag className="heading-label">{label}</Tag>
-      <p className="heading-sub">{subtitle}</p>
+      {subtitle ? <p className="heading-sub">{subtitle}</p> : null}
     </header>
   )
 }

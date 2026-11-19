@@ -1,5 +1,5 @@
 // The search index: one flat list built from content.ts, so it never drifts from the pages.
-import { about, community, home, nav, projects, prompts, search, work } from './content'
+import { about, community, home, nav, projects, prompts, search, site, work } from './content'
 
 export type Entry = {
   title: string
@@ -19,7 +19,7 @@ export const entries: Entry[] = [
     detail: search.pageDetail,
     kind: k.page,
     to: n.path,
-    keywords: n.path === '/about' ? `${about.name} ${about.subtitle} ${about.bio} ${about.stackLabel}` : undefined,
+    keywords: n.path === '/about' ? `${about.name} ${about.subtitle} ${about.stackLabel} ${site.locationLines.join(' ')}` : undefined,
   })),
   ...projects.items.map((p) => ({
     title: p.name,

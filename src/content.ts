@@ -4,7 +4,15 @@ export const site = {
   name: 'Gaida Amzar',
   firstName: 'Gaida',
   email: 'mgamzar@gmail.com',
-  location: 'Based in Vancouver, Canada',
+  // Rotates in the header status slot (top-right). Keep phrases short — one line.
+  locationLines: [
+    'In Vancouver, Canada right now...',
+    'Shipping a side project...',
+    'Craving Bali beaches and nasi campur...',
+    'In a late-night music session...',
+    'Hitting the gym...',
+    'Writing well-documented APIs...',
+  ],
   github: 'https://github.com/gaida123',
   linkedin: 'https://linkedin.com/in/gaida-amzar',
 }
@@ -65,38 +73,36 @@ export type Reading = {
   source: string
   title: string
   href: string
-  glow: string // r g b of the focus glow
-  cover: { image: string } | { label: string; from: string; to: string }
 }
 
 export const home = {
   explore: 'Explore',
-  hero: { title: ['GET TO', 'KNOW ME!'], caption: 'Get to know me' },
+  hero: { title: ['GET TO', 'KNOW ME!'] },
   work: ['WORK', 'EXPERIENCE'],
   projects: ['PROJECTS'],
   community: ['COMMUNITY'],
   readingLabel: 'Now reading',
+  // Text-only cards. To update: swap source, title, href.
   reading: [
     {
-      source: 'Nature',
-      title: 'AI data hubs in space: when will they take flight?',
-      href: 'https://www.nature.com/articles/d41586-026-01370-6',
-      glow: '51 128 255',
-      cover: { image: '/assets/data-hub.svg' },
+      source: 'Claude',
+      title: 'Introducing Claude Whiteboards, Sheets, and Data',
+      href: 'https://claude.com/resources/articles/sheets-whiteboards-data',
     },
     {
-      source: 'IEA',
-      title: 'Energy demand from AI',
-      href: 'https://www.iea.org/reports/energy-and-ai/energy-demand-from-ai',
-      glow: '242 140 38',
-      cover: { label: 'IEA', from: 'rgb(242 153 38)', to: 'rgb(140 38 26)' },
+      source: 'CNBC',
+      title: 'How AI is redefining Wall Street jobs',
+      href: 'https://www.cnbc.com/2026/10/02/ai-redefining-wall-street-jobs.html',
     },
     {
-      source: 'FOREX.com',
-      title: 'AI Stock Investing: How to Use Artificial Intelligence',
-      href: 'https://www.forex.com/en-ca/trading-guides/how-to-use-ai-in-stock-trading/',
-      glow: '26 178 140',
-      cover: { label: 'FOREX.COM', from: 'rgb(26 140 115)', to: 'rgb(13 38 64)' },
+      source: 'CNBC Make It',
+      title: 'How to diversify your portfolio amid AI-bubble fears',
+      href: 'https://www.cnbc.com/make-it/2026/11/18/how-to-diversify-your-portfolio-amid-ai-bubble-fears.html',
+    },
+    {
+      source: 'BBC',
+      title: "Trying Tourette's device was the best day of my life",
+      href: 'https://www.bbc.com/news/articles/cmp3g3e5q4zxo',
     },
   ] satisfies Reading[] as Reading[],
 }
@@ -108,7 +114,6 @@ export const about = {
   subtitle: 'A developer who builds web platforms, e-commerce systems and tools that real people use.',
   name: site.name,
   photoAlt: `Portrait of ${site.name}`,
-  bio: "I'm studying Computer Science at the University of British Columbia. Outside of code I'm into shipping side projects, Bali beaches and nasi campur, late-night music sessions, the gym and well-documented APIs.",
   facts: [
     { label: 'Now', value: 'Computer Science @ UBC' },
     { label: 'Based', value: 'Vancouver, BC' },
@@ -129,6 +134,12 @@ export const about = {
     // From the Figma draft; resume.md lists no design tools.
     { group: 'Design & Workflow', tools: [{ name: 'Figma' }, { name: 'Notion' }] },
   ] as { group: string; tools: { name: string }[] }[],
+  // Order matches the home row: projects → work → community
+  ctas: [
+    { to: '/projects', label: 'See my projects', tone: 'projects' },
+    { to: '/work', label: 'View my experience', tone: 'work' },
+    { to: '/community', label: 'Explore community', tone: 'community' },
+  ] as { to: string; label: string; tone: 'projects' | 'work' | 'community' | 'about' }[],
 }
 
 export const work = {
@@ -152,14 +163,6 @@ export const work = {
       logo: '/assets/logo-sarong.webp', // Sarong Wholesale, the company's brand
       summary:
         'Solo-built a production **B2B wholesale e-commerce platform**, and cut order errors **30%** with an ACID-compliant checkout.',
-    },
-    {
-      // TODO: Gettook is not in resume.md. Add its dates and confirm the role and summary (taken from the Figma draft).
-      company: 'Gettook',
-      role: 'Web Developer',
-      dates: 'TODO: add dates',
-      logo: '/assets/logo-gettook.webp',
-      summary: 'Drove **performance and SEO** with Lighthouse audits, and added **WhatsApp-linked lead capture**.',
     },
   ],
   awardsLabel: 'Awards',
@@ -188,6 +191,12 @@ export const projects = {
   readMore: 'Read more',
   prev: 'Previous project',
   next: 'Next project',
+  // Same CTAs as About, with About in place of Projects
+  ctas: [
+    { to: '/about', label: 'Get to know me', tone: 'about' },
+    { to: '/work', label: 'View my experience', tone: 'work' },
+    { to: '/community', label: 'Explore community', tone: 'community' },
+  ] as { to: string; label: string; tone: 'projects' | 'work' | 'community' | 'about' }[],
   items: [
     {
       name: 'Etika',
@@ -205,7 +214,7 @@ export const projects = {
         'Agentic AI desktop co-pilot that navigates any UI by voice, using screenshot-based spatial reasoning. Four agents run in parallel and stream steps over WebSockets, and PDF help docs become live onboarding flows.',
       tags: 'Electron · FastAPI · WebSockets · Gemini 1.5 Flash',
       slug: 'polterguide',
-      image: { src: '/assets/polterguide-dashboard.webp', width: '196.77%', height: '100%' },
+      image: { src: '/assets/polterguide-dashboard.webp', width: '196.77%', height: '100%', left: '-35%' },
     },
     {
       name: 'Lockout',
@@ -217,12 +226,13 @@ export const projects = {
       image: { src: '/assets/lockout-session.webp', width: '100%', height: '135.34%' },
     },
     {
-      // TODO: add a screenshot (the Figma file has none) and a link if there is one.
+      // TODO: add a link if there is one.
       name: 'Rhume',
       meta: 'Product · 2026 · 1st Place, UBC BizTech Product+ 2026',
       summary:
         "An SAP Joule concept that uses wastewater flu data to move Shoppers Drug Mart medicine between regions before demand spikes. In a simulated 2023-24 flu season it cut empty-shelf days for children's fever and cold medicine by 76%.",
       tags: 'Next.js · TypeScript · Claude',
+      image: { src: '/assets/project-rhume.png', width: '197%', height: '100%', left: '-8.5%' },
     },
   ] as Project[],
 }
@@ -506,34 +516,43 @@ export type Stop = {
   dates: string
   blurb: string
   photo?: string // optional; without one the cover shows the name in display type
+  photoPosition?: string // CSS object-position when the crop needs a nudge
 }
 
 export const community = {
   label: 'Community',
   subtitle: 'Clubs and teams, newest first.',
+  // Same CTAs as About, with About in place of Community
+  ctas: [
+    { to: '/projects', label: 'See my projects', tone: 'projects' },
+    { to: '/work', label: 'View my experience', tone: 'work' },
+    { to: '/about', label: 'Get to know me', tone: 'about' },
+  ] as { to: string; label: string; tone: 'projects' | 'work' | 'community' | 'about' }[],
   stops: [
     {
-      // TODO: add a photo.
       name: 'UBC Launch Pad',
       role: 'Software Developer',
       dates: 'Oct 2026 — Now',
       blurb:
         "Building the **measurement probe** for an internet connectivity research platform with Dr. Nguyen Phong Hoang's lab.",
+      photo: '/assets/community-launchpad.png',
+      photoPosition: '0% center', // nudged 50% left from default 50%
     },
     {
-      // TODO: add a photo.
       name: 'UBC Trading Group',
       role: 'Quantitative Developer',
       dates: 'Oct 2026 — Now',
       blurb:
         "Backend for **Sauder's first trading competition**: moved team scoring to PostgreSQL and closed a leak of unreleased market news.",
+      photo: '/assets/community-trading.avif',
     },
     {
-      // TODO: add a photo.
       name: 'UBC Science Undergraduate Society',
       role: 'Hackathon Committee, Engagement Subteam',
       dates: 'Jun — Nov 2026',
       blurb: 'Designed workshops and side events for **Hack The Coast**, a 150-person hackathon planned for Feb 2027.',
+      photo: '/assets/community-sus.png',
+      photoPosition: '62% center', // nudged 15% left from default 50%
     },
     {
       name: 'Gado-Gado Indonesian Student Association of UBC',
@@ -541,7 +560,7 @@ export const community = {
       dates: 'Nov 2025 — Now',
       blurb:
         'Contributed to an **event registration platform for 300+ students**, with academic-year scoping in PostgreSQL and access locked down with **JWT + RLS**.',
-      photo: '/assets/community-gisau.webp',
+      photo: '/assets/community-gisau.jpg',
     },
   ] as Stop[],
 }

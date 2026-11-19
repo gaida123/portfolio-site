@@ -61,9 +61,12 @@ export function FocusProvider({ children }: { children: ReactNode }) {
     const el = current()
     ;(el?.matches('a, button') ? el : el?.querySelector<HTMLElement>('a, button'))?.click()
   }
-  // Back is "go Home" (or wherever the screen says), not history back; the effect below restores focus to the card we came from.
+  // Back / Esc / B: previous page. Screens can still handle 'back' themselves (return true).
+  // No in-app history (opened this URL cold) → Home. Focus restore on the destination is below.
   const back = () => {
-    if (!keys.current?.('back')) navigate('/')
+    if (keys.current?.('back')) return
+    const idx = (window.history.state as { idx?: number } | null)?.idx ?? 0
+    navigate(idx > 0 ? -1 : '/')
   }
 
   // After a route change or the menu opening/closing, decide where focus lands.

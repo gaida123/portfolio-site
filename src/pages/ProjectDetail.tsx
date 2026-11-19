@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import { projectDetails, projectPage, projects } from '../content'
 import { useFocus } from '../focus-context'
 
@@ -17,36 +17,94 @@ function Detail({ slug }: { slug: string }) {
   const next = withPages[(at + 1) % withPages.length]
 
   const { keys } = useFocus()
-  const navigate = useNavigate()
   const [shot, setShot] = useState(0)
   const scroller = useRef<HTMLDivElement>(null)
   const github = useRef<HTMLAnchorElement>(null)
   const devpost = useRef<HTMLAnchorElement>(null)
+  const upNext = useRef<HTMLAnchorElement>(null)
   const n = d.media.length
   const step = (by: number) => setShot((s) => (s + by + n) % n)
+  const active = () => document.activeElement
+  const nextSelected = () => active() === upNext.current
+  const onActions = () => active() === github.current || active() === devpost.current
+  const atBottom = () => {
+    const el = scroller.current
+    return !!el && el.scrollTop + el.clientHeight >= el.scrollHeight - 4
+  }
+  const select = (el: HTMLAnchorElement | null) => {
+    el?.focus({ preventScroll: true })
+    el?.scrollIntoView({ block: 'nearest' })
+  }
+  // Leave the action row / up-next and return to reading so ↓ can keep scrolling.
+  const toReading = () => scroller.current?.focus({ preventScroll: true })
 
   // This page scrolls, so instead of a focus ring the keys act directly:
-  // ←/→ gallery, ↑/↓ scroll, A / Enter GitHub, X Devpost, B back to the carousel on this project.
+  // ←/→ gallery then GitHub → Devpost (stops), ↑/↓ scroll, A / Enter opens the selected control, X Devpost, B back.
   useEffect(() => {
     keys.current = (action) => {
-      if (action === 'back') {
-        navigate('/projects', { state: { slug } })
-        return true
-      }
       if (action === 'alt') {
         devpost.current?.click()
         return true
       }
       if (document.activeElement?.getAttribute('data-focus-id') === 'nav:back') {
         // On the header's Back button: ↓ returns to reading, Enter / A presses Back, other arrows do nothing.
-        if (action === 'down') scroller.current?.focus({ preventScroll: true })
+        if (action === 'down') toReading()
         return action !== 'open'
       }
-      // At the top of the page, ↑ moves focus up to the Back button.
-      if (action === 'up' && !scroller.current?.scrollTop) return false
-      if (action === 'left' || action === 'right') step(action === 'right' ? 1 : -1)
-      else if (action === 'up' || action === 'down') scroller.current?.scrollBy({ top: action === 'down' ? 240 : -240 })
-      else if (action === 'open') github.current?.click()
+      if (action === 'up') {
+        if (nextSelected() || onActions()) {
+          toReading()
+          return true
+        }
+        // At the top of the page, ↑ moves focus up to the Back button.
+        if (!scroller.current?.scrollTop) return false
+        scroller.current.scrollBy({ top: -240 })
+        return true
+      }
+      if (action === 'down') {
+        if (onActions()) toReading()
+        if (nextSelected()) return true
+        if (atBottom()) {
+          select(upNext.current)
+          return true
+        }
+        scroller.current?.scrollBy({ top: 240 })
+        // After the last scroll step, land on "See the next project".
+        if (atBottom()) select(upNext.current)
+        return true
+      }
+      if (action === 'right') {
+        if (active() === github.current) {
+          select(devpost.current)
+          return true
+        }
+        if (active() === devpost.current || nextSelected()) return true // end of the row
+        // After the last shot, or once you've scrolled into the write-up, → picks GitHub.
+        if (shot >= n - 1 || (scroller.current?.scrollTop ?? 0) > 0) {
+          select(github.current)
+          return true
+        }
+        step(1)
+        return true
+      }
+      if (action === 'left') {
+        if (active() === devpost.current) {
+          select(github.current)
+          return true
+        }
+        if (active() === github.current) {
+          toReading()
+          return true
+        }
+        if (nextSelected() || shot <= 0) return true
+        step(-1)
+        return true
+      }
+      if (action === 'open') {
+        if (nextSelected()) upNext.current?.click()
+        else if (active() === devpost.current) devpost.current?.click()
+        else github.current?.click()
+      }
       return true
     }
     return () => {
@@ -126,11 +184,11 @@ function Detail({ slug }: { slug: string }) {
               ))}
             </ul>
             <div className="detail-actions">
-              <a className="btn btn-primary" ref={github} href={d.github} target="_blank" rel="noreferrer">
+              <a className="btn btn-primary" ref={github} href={d.github} target="_blank" rel="noreferrer" tabIndex={-1}>
                 <span className="face" aria-hidden="true">A</span>
                 {projectPage.github}
               </a>
-              <a className="btn" ref={devpost} href={d.devpost} target="_blank" rel="noreferrer">
+              <a className="btn" ref={devpost} href={d.devpost} target="_blank" rel="noreferrer" tabIndex={-1}>
                 <span className="face" aria-hidden="true">X</span>
                 {projectPage.devpost}
               </a>
@@ -146,7 +204,7 @@ function Detail({ slug }: { slug: string }) {
           </aside>
         </div>
 
-        <Link className="up-next" to={`/projects/${next.slug}`}>
+        <Link className="up-next" ref={upNext} to={`/projects/${next.slug}`} tabIndex={-1}>
           <img src={projectDetails[next.slug!].thumb ?? projectDetails[next.slug!].cover} alt="" />
           <div>
             <h2>{next.name}</h2>
