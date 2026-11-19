@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { about } from '../content'
+import { about, pageCtas } from '../content'
 import { useFocus } from '../focus-context'
 
 export default function About() {
@@ -54,7 +54,7 @@ export default function About() {
           </dl>
         </section>
         <div className="about-ctas">
-          {about.ctas.map((c) => (
+          {pageCtas('about').map((c) => (
             <Link
               key={c.to}
               to={c.to}

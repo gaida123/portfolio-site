@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { projectDetails, projectPage, projects } from '../content'
 import { useFocus } from '../focus-context'
 
@@ -10,6 +10,7 @@ export default function ProjectDetail() {
 }
 
 function Detail({ slug }: { slug: string }) {
+  const navigate = useNavigate()
   const d = projectDetails[slug]
   const withPages = projects.items.filter((p) => p.slug && projectDetails[p.slug])
   const at = withPages.findIndex((p) => p.slug === slug)
@@ -42,6 +43,10 @@ function Detail({ slug }: { slug: string }) {
   // ←/→ gallery then GitHub → Devpost (stops), ↑/↓ scroll, A / Enter opens the selected control, X Devpost, B back.
   useEffect(() => {
     keys.current = (action) => {
+      if (action === 'back') {
+        navigate('/projects', { state: { slug } })
+        return true
+      }
       if (action === 'alt') {
         devpost.current?.click()
         return true

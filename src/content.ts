@@ -25,6 +25,21 @@ export const nav = [
   { path: '/community', label: 'Community' },
 ]
 
+export type CtaTone = 'projects' | 'work' | 'community' | 'about'
+export type PageCta = { to: string; label: string; tone: CtaTone }
+
+const CTA_PROJECTS: PageCta = { to: '/projects', label: 'See my projects', tone: 'projects' }
+const CTA_WORK: PageCta = { to: '/work', label: 'View my experience', tone: 'work' }
+const CTA_COMMUNITY: PageCta = { to: '/community', label: 'Explore community', tone: 'community' }
+const CTA_ABOUT: PageCta = { to: '/about', label: 'Get to know me', tone: 'about' }
+
+/** Order: projects, work, community — but replace the current page's slot with About. */
+export function pageCtas(current: 'about' | 'projects' | 'work' | 'community'): PageCta[] {
+  const row = [CTA_PROJECTS, CTA_WORK, CTA_COMMUNITY] as PageCta[]
+  if (current === 'about') return row
+  return row.map((c) => (c.tone === current ? CTA_ABOUT : c))
+}
+
 export const prompts = {
   menu: 'Menu',
   close: 'Close',
@@ -134,17 +149,10 @@ export const about = {
     // From the Figma draft; resume.md lists no design tools.
     { group: 'Design & Workflow', tools: [{ name: 'Figma' }, { name: 'Notion' }] },
   ] as { group: string; tools: { name: string }[] }[],
-  // Order matches the home row: projects → work → community
-  ctas: [
-    { to: '/projects', label: 'See my projects', tone: 'projects' },
-    { to: '/work', label: 'View my experience', tone: 'work' },
-    { to: '/community', label: 'Explore community', tone: 'community' },
-  ] as { to: string; label: string; tone: 'projects' | 'work' | 'community' | 'about' }[],
 }
 
 export const work = {
   label: 'Work experience',
-  subtitle: "Where I've worked, newest first.",
   jobs: [
     {
       company: 'Didik Elektronik',
@@ -186,17 +194,7 @@ export type Project = {
 
 export const projects = {
   label: 'Projects',
-  subtitle: 'Hackathon builds, competition entries and side projects.',
-  viewAll: { label: 'View all', href: site.github },
   readMore: 'Read more',
-  prev: 'Previous project',
-  next: 'Next project',
-  // Same CTAs as About, with About in place of Projects
-  ctas: [
-    { to: '/about', label: 'Get to know me', tone: 'about' },
-    { to: '/work', label: 'View my experience', tone: 'work' },
-    { to: '/community', label: 'Explore community', tone: 'community' },
-  ] as { to: string; label: string; tone: 'projects' | 'work' | 'community' | 'about' }[],
   items: [
     {
       name: 'Etika',
@@ -521,13 +519,6 @@ export type Stop = {
 
 export const community = {
   label: 'Community',
-  subtitle: 'Clubs and teams, newest first.',
-  // Same CTAs as About, with About in place of Community
-  ctas: [
-    { to: '/projects', label: 'See my projects', tone: 'projects' },
-    { to: '/work', label: 'View my experience', tone: 'work' },
-    { to: '/about', label: 'Get to know me', tone: 'about' },
-  ] as { to: string; label: string; tone: 'projects' | 'work' | 'community' | 'about' }[],
   stops: [
     {
       name: 'UBC Launch Pad',

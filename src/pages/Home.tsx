@@ -25,7 +25,7 @@ export default function Home() {
           </Link>
 
           <Link to="/work" className="card capsule capsule-work" {...focusProps('/work')}>
-            <img className="capsule-cover" src="/assets/home-work.jpg" alt="" />
+            <img className="capsule-cover" src="/assets/home-work.webp" alt="" />
             <span className="capsule-title">{lines(home.work)}</span>
           </Link>
 

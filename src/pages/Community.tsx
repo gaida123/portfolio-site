@@ -1,7 +1,7 @@
 import './community.css'
 import type { CSSProperties } from 'react'
 import { Link } from 'react-router-dom'
-import { community } from '../content'
+import { community, pageCtas } from '../content'
 import { useFocus } from '../focus-context'
 import { Heading, rich } from '../ui'
 
@@ -41,7 +41,7 @@ export default function Community() {
         ))}
       </ul>
       <div className="about-ctas about-ctas-center community-ctas">
-        {community.ctas.map((c) => (
+        {pageCtas('community').map((c) => (
           <Link
             key={c.to}
             to={c.to}

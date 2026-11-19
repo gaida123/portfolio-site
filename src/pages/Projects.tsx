@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { projects } from '../content'
+import { pageCtas, projects } from '../content'
 import { useFocus } from '../focus-context'
 import { Heading } from '../ui'
 
@@ -119,7 +119,7 @@ export default function Projects() {
         })}
       </div>
       <div className="about-ctas about-ctas-center projects-ctas">
-        {projects.ctas.map((c) => (
+        {pageCtas('projects').map((c) => (
           <Link
             key={c.to}
             to={c.to}

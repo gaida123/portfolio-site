@@ -66,7 +66,8 @@ export function FocusProvider({ children }: { children: ReactNode }) {
   const back = () => {
     if (keys.current?.('back')) return
     const idx = (window.history.state as { idx?: number } | null)?.idx ?? 0
-    navigate(idx > 0 ? -1 : '/')
+    if (idx > 0) navigate(-1)
+    else navigate('/')
   }
 
   // After a route change or the menu opening/closing, decide where focus lands.
