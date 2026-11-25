@@ -30,7 +30,6 @@ export const entries: Entry[] = [
     keywords: `${p.tags} ${p.summary}`,
   })),
   ...work.jobs.map((j) => ({ title: j.company, detail: j.role, kind: k.work, to: '/work', keywords: j.summary })),
-  ...work.awards.map((a) => ({ title: a.title, detail: a.detail, kind: k.award, to: '/work' })),
   ...community.stops.map((s) => ({ title: s.name, detail: s.role, kind: k.community, to: '/community', keywords: s.blurb })),
   ...about.stack.flatMap((g) => g.tools.map((t) => ({ title: t.name, detail: g.group, kind: k.skill, to: '/about' }))),
   ...about.elsewhere.map((l) => ({

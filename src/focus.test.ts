@@ -36,9 +36,9 @@ test('focus and input-mode logic', () => {
   const railW = (1296 - railGap * 3) / 4
   const homeLayout: Record<string, Rect> = {
     hero: r(heroLeft, rowTop, heroW, 279),
-    work: r(heroLeft + heroW + gap, capTop, capW, capH),
-    projects: r(heroLeft + heroW + gap + capW + gap, capTop, capW, capH),
-    community: r(heroLeft + heroW + gap + (capW + gap) * 2, capTop, capW, capH),
+    projects: r(heroLeft + heroW + gap, capTop, capW, capH),
+    community: r(heroLeft + heroW + gap + capW + gap, capTop, capW, capH),
+    work: r(heroLeft + heroW + gap + (capW + gap) * 2, capTop, capW, capH),
     read0: r(heroLeft, railTop, railW, railH),
     read1: r(heroLeft + railW + railGap, railTop, railW, railH),
     read2: r(heroLeft + (railW + railGap) * 2, railTop, railW, railH),
@@ -53,17 +53,17 @@ test('focus and input-mode logic', () => {
       dir,
     )?.id ?? null
 
-  expect(go('hero', 'right')).toBe('work')
-  expect(go('work', 'right')).toBe('projects')
+  expect(go('hero', 'right')).toBe('projects')
   expect(go('projects', 'right')).toBe('community')
-  expect(go('community', 'right')).toBeNull()
-  expect(go('community', 'left')).toBe('projects')
-  expect(go('work', 'left')).toBe('hero')
+  expect(go('community', 'right')).toBe('work')
+  expect(go('work', 'right')).toBeNull()
+  expect(go('work', 'left')).toBe('community')
+  expect(go('projects', 'left')).toBe('hero')
   // Wide hero: its centre sits between the first two rail cards; spatial nav picks read1.
   expect(go('hero', 'down')).toBe('read1')
-  expect(go('work', 'down')).toBe('read2')
-  expect(go('projects', 'down')).toBe('read3')
+  expect(go('projects', 'down')).toBe('read2')
   expect(go('community', 'down')).toBe('read3')
+  expect(go('work', 'down')).toBe('read3')
   expect(go('read0', 'right')).toBe('read1')
   expect(go('read2', 'right')).toBe('read3')
   expect(go('read0', 'up')).toBe('hero')

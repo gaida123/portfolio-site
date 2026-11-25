@@ -130,7 +130,6 @@ function Detail({ slug }: { slug: string }) {
     <div className="detail-scroll" ref={scroller} tabIndex={-1}>
       <article className="detail">
         <h1>{project.name}</h1>
-        <p className="detail-tagline">{d.tagline}</p>
 
         <div className="detail-main">
           <div className="detail-left">

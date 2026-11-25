@@ -6,10 +6,10 @@ export const site = {
   email: 'mgamzar@gmail.com',
   // Rotates in the header status slot (top-right). Keep phrases short — one line.
   locationLines: [
-    'In Vancouver, Canada right now...',
+    'In Vancouver, Canada...',
     'Shipping a side project...',
     'Craving Bali beaches and nasi campur...',
-    'In a late-night music session...',
+    'Listening to some late-night tunes...',
     'Hitting the gym...',
     'Writing well-documented APIs...',
   ],
@@ -46,7 +46,7 @@ export const prompts = {
   move: 'Move',
   open: 'Open',
   back: 'Back',
-  email: `Email ${site.firstName}`,
+  email: 'Send me an email',
 }
 
 export const search = {
@@ -66,7 +66,7 @@ export const search = {
   aliases: {
     Home: 'explore reading start',
     About: 'bio skills tech stack languages contact resume',
-    Work: 'experience jobs awards career',
+    Work: 'experience jobs career',
     Projects: 'hackathons portfolio builds',
     Community: 'clubs teams involvement',
     'Gado-Gado Indonesian Student Association of UBC': 'GISAU',
@@ -76,7 +76,6 @@ export const search = {
     page: 'Page',
     project: 'Project',
     work: 'Work',
-    award: 'Award',
     community: 'Community',
     skill: 'Skill',
     link: 'Link',
@@ -100,6 +99,11 @@ export const home = {
   // Text-only cards. To update: swap source, title, href.
   reading: [
     {
+      source: 'NVIDIA',
+      title: 'NVIDIA Board Reinstates Jensen Huang as President, CEO and Board Director',
+      href: 'https://nvidianews.nvidia.com/news/nvidia-board-reinstates-jensen-huang-as-president-ceo-and-board-director',
+    },
+    {
       source: 'Claude',
       title: 'Introducing Claude Whiteboards, Sheets, and Data',
       href: 'https://claude.com/resources/articles/sheets-whiteboards-data',
@@ -111,7 +115,7 @@ export const home = {
     },
     {
       source: 'CNBC Make It',
-      title: 'How to diversify your portfolio amid AI-bubble fears',
+      title: 'How to diversify your wa amid AI-bubble fears',
       href: 'https://www.cnbc.com/make-it/2026/11/18/how-to-diversify-your-portfolio-amid-ai-bubble-fears.html',
     },
     {
@@ -153,6 +157,7 @@ export const about = {
 
 export const work = {
   label: 'Work experience',
+  more: 'Searching for Summer 2027 — stay tuned.',
   jobs: [
     {
       company: 'Didik Elektronik',
@@ -161,7 +166,7 @@ export const work = {
       place: 'Remote from Bali, Indonesia',
       logo: '/assets/logo-didik.webp',
       summary:
-        'Built a **full-stack e-commerce platform** with multi-courier shipping, and set up CI/CD that cut deploys from **5 minutes to 30 seconds**.',
+        'Built a full-stack e-commerce platform with multi-courier shipping, and set up CI/CD that cut deploys from 5 minutes to 30 seconds.',
     },
     {
       company: 'PT. Asia Garment Internasional',
@@ -170,17 +175,9 @@ export const work = {
       place: 'Bali, Indonesia',
       logo: '/assets/logo-sarong.webp', // Sarong Wholesale, the company's brand
       summary:
-        'Solo-built a production **B2B wholesale e-commerce platform**, and cut order errors **30%** with an ACID-compliant checkout.',
+        'Built a production B2B wholesale e-commerce platform, and cut order errors 30% with an ACID-compliant checkout.',
     },
   ],
-  awardsLabel: 'Awards',
-  awardsSubtitle: 'Hackathons, competitions and scholarships.',
-  awards: [
-    { title: '1st Place', detail: 'UBC BizTech Product+ 2026 · Rhume', year: '2026' },
-    { title: '3rd Place', detail: 'StormHacks 2026 · Etika', year: '2026', slug: 'etika' },
-    { title: 'Honorable Mention (Google Track)', detail: 'ProduHacks 2026 · PolterGuide', year: '2026', slug: 'polterguide' },
-    { title: 'Outstanding International Student Award', detail: 'UBC · $10,000 for first year', year: '2025' },
-  ] as { title: string; detail: string; year: string; slug?: string }[], // slug: has a detail page at /projects/<slug>
 }
 
 export type Project = {

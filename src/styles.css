@@ -367,7 +367,7 @@ span.hint {
   width: calc(100% + 120px);
   height: calc(100% + 120px);
   object-fit: cover;
-  filter: blur(18px);
+  filter: blur(2px);
   opacity: 0.7;
   /* Stop 2px short of the fade's bottom edge, so no light sliver shows at fractional scales */
   clip-path: inset(60px 60px 62px);
@@ -498,20 +498,29 @@ span.hint {
 .capsule-community .capsule-cover {
   object-position: center 40%;
 }
-/* Reading rail */
+/* Reading rail: equal cards, horizontal scroll when they overflow */
 .rail {
   display: flex;
   gap: 18px;
   margin-bottom: 72px; /* match breathing room above the Now reading block */
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-subtle) transparent;
+}
+.rail > li {
+  flex: none;
+  scroll-snap-align: start;
 }
 .reading {
   --glow: 51 128 255;
+  box-sizing: border-box;
   display: flex;
-  flex: 1;
   flex-direction: column;
   gap: 8px;
-  min-width: 0;
-  min-height: 96px;
+  width: 310.5px; /* four fit the 1296px row; extras scroll */
+  height: 132px;
   padding: 18px 20px;
   background: var(--bg-raised);
 }
@@ -615,14 +624,17 @@ strong {
 }
 /* Quieter than the About CTAs — raised surface, no loud fills */
 .projects-ctas .about-cta,
-.community-ctas .about-cta {
+.community-ctas .about-cta,
+.work-ctas .about-cta {
   background: var(--bg-raised);
   color: var(--text-secondary);
 }
 .projects-ctas .about-cta:hover,
 .projects-ctas .about-cta:focus-visible,
 .community-ctas .about-cta:hover,
-.community-ctas .about-cta:focus-visible {
+.community-ctas .about-cta:focus-visible,
+.work-ctas .about-cta:hover,
+.work-ctas .about-cta:focus-visible {
   color: var(--text-primary);
 }
 .about-cta-projects {
@@ -1255,7 +1267,7 @@ strong {
   .hero {
     flex: 0 0 100%;
     height: auto;
-    aspect-ratio: 753.75 / 279;
+    aspect-ratio: 753.75 / calc(279 * 1.15); /* ~15% taller */
   }
   .hero-portrait {
     width: 78%;
@@ -1270,21 +1282,19 @@ strong {
   }
   .capsule {
     zoom: var(--capsule-zoom, 1); /* set in main.tsx so the three share one row */
+    height: calc(274.5px * 0.85 * 0.85); /* another ~15% shorter */
   }
   .home-row + .home-explore {
     margin-top: 28px;
   }
   .rail {
-    flex-direction: column;
-    margin-bottom: 0; /* .home already pads the bottom on small screens */
+    margin-bottom: 0; /* .home already pads the bottom; keep the same 20px inset as Explore */
+    padding: 0;
+    -webkit-overflow-scrolling: touch;
   }
   .reading {
-    width: 100%;
-  }
-  .reading-title {
-    display: block;
-    overflow: visible;
-    -webkit-line-clamp: unset;
+    width: min(280px, 78vw);
+    height: 132px; /* same height as desktop */
   }
 
   /* Sub-pages: space under the header so titles aren't tight against chrome */

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { BrowserRouter, Link, Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom'
+import { BrowserRouter, Navigate, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import { nav, projects, prompts, search, site } from './content'
 import { FocusProvider, FocusRing, useFocus } from './focus-context'
 import About from './pages/About'
@@ -130,7 +130,7 @@ function LocationStatus() {
 }
 
 function Header({ onSearch }: { onSearch: () => void }) {
-  const { focusProps, back } = useFocus()
+  const { focusProps, back, openMenu } = useFocus()
   const onSubPage = useLocation().pathname !== '/'
   return (
     <header className="header">
@@ -150,9 +150,9 @@ function Header({ onSearch }: { onSearch: () => void }) {
       <div className="status">
         <LocationStatus />
         <Clock />
-        <Link to="/" className="avatar" aria-label="Home">
-          <img src="/assets/backdrop.webp" alt="" />
-        </Link>
+        <button type="button" className="avatar" onClick={openMenu} aria-label={prompts.menu}>
+          <img src="/apple-touch-icon.png" alt="" />
+        </button>
       </div>
     </header>
   )
@@ -204,7 +204,6 @@ function Menu() {
   return (
     <div className="menu" onClick={(e) => e.target === e.currentTarget && closeMenu()}>
       <div className="menu-panel" role="dialog" aria-modal="true" aria-label={prompts.menu} data-focus-scope>
-        <p className="menu-label" aria-hidden="true">{prompts.menu}</p>
         <nav>
           <ul>
             {nav.map((n) => (

@@ -29,7 +29,12 @@ export const useFocus = () => useContext(Ctx)!
 // The menu overlay, when open, is the only scope.
 const items = () =>
   Array.from((document.querySelector('[data-focus-scope]') ?? document).querySelectorAll<HTMLElement>('[data-focus-id]'))
-const focus = (el?: HTMLElement | null) => el?.focus({ preventScroll: true })
+const focus = (el?: HTMLElement | null) => {
+  if (!el) return
+  el.focus({ preventScroll: true })
+  // Overflow rails (Now reading) must follow the controller; nearest keeps the page from jumping.
+  el.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+}
 
 export function FocusProvider({ children }: { children: ReactNode }) {
   const { pathname } = useLocation()
@@ -246,9 +251,15 @@ export function FocusRing() {
       // offset* ignores transforms, so neither the stage scale nor the card's own grow skews the numbers.
       let x = 0
       let y = 0
-      for (let n: HTMLElement | null = el; n && n !== ring.offsetParent; n = n.offsetParent as HTMLElement | null) {
+      const root = ring.offsetParent as HTMLElement | null
+      for (let n: HTMLElement | null = el; n && n !== root; n = n.offsetParent as HTMLElement | null) {
         x += n.offsetLeft
         y += n.offsetTop
+      }
+      // offsetParent skips overflow rails; subtract their scroll so the ring tracks scrolled cards.
+      for (let n: HTMLElement | null = el.parentElement; n && n !== root; n = n.parentElement) {
+        x -= n.scrollLeft
+        y -= n.scrollTop
       }
       // The ring wraps the card at its focused size and position (grown, or lifted on Community).
       const css = getComputedStyle(el)
@@ -270,8 +281,14 @@ export function FocusRing() {
     place(ring.style.opacity !== '1' || lastPath.current !== pathname)
     lastPath.current = pathname
     const onResize = () => place(true)
+    // Capture: the reading rail scrolls on itself, not on window.
+    const onScroll = () => place(true)
     window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
+    window.addEventListener('scroll', onScroll, true)
+    return () => {
+      window.removeEventListener('resize', onResize)
+      window.removeEventListener('scroll', onScroll, true)
+    }
   })
 
   return <div ref={ref} className="ring" aria-hidden="true" />

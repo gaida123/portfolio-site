@@ -1,8 +1,8 @@
 import './work.css'
 import { Link } from 'react-router-dom'
-import { work } from '../content'
+import { pageCtas, work } from '../content'
 import { useFocus } from '../focus-context'
-import { Heading, rich } from '../ui'
+import { Heading } from '../ui'
 
 export default function Work() {
   const { focusProps } = useFocus()
@@ -24,36 +24,27 @@ export default function Work() {
                 {j.dates}
                 {j.place && <span className="wk-sub">{j.place}</span>}
               </p>
-              <p className="wk-summary">{rich(j.summary)}</p>
+              <p className="wk-summary">{j.summary}</p>
             </li>
           ))}
         </ol>
       </section>
-      <section className="wk-awards">
-        <Heading as="h2" label={work.awardsLabel} />
-        <ul className="wk-list">
-          {work.awards.map((a) => {
-            const body = (
-              <>
-                <h3>{a.title}</h3>
-                <span className="wk-year">{a.year}</span>
-                <p className="wk-sub">{a.detail}</p>
-              </>
-            )
-            return (
-              <li key={a.detail}>
-                {a.slug ? (
-                  <Link to={`/projects/${a.slug}`} className="wk-row wk-award" {...focusProps(`award:${a.slug}`)}>
-                    {body}
-                  </Link>
-                ) : (
-                  <div className="wk-row wk-award">{body}</div>
-                )}
-              </li>
-            )
-          })}
-        </ul>
-      </section>
+
+      <footer className="wk-close">
+        <p className="wk-more">{work.more}</p>
+        <div className="about-ctas about-ctas-center work-ctas">
+          {pageCtas('work').map((c) => (
+            <Link
+              key={c.to}
+              to={c.to}
+              className={`pill-btn about-cta about-cta-${c.tone}`}
+              {...focusProps(`work:${c.tone}`)}
+            >
+              {c.label}
+            </Link>
+          ))}
+        </div>
+      </footer>
     </div>
   )
 }

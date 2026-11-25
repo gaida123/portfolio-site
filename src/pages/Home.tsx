@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <div className="backdrop" aria-hidden="true">
-        <img src="/assets/backdrop.webp" alt="" />
+        <img src="/assets/backdrop.jpg" alt="" />
       </div>
       <div className="frame home">
         <h1 className="sr-only">{site.name}</h1>
@@ -24,11 +24,6 @@ export default function Home() {
             <span className="hero-title">{lines(home.hero.title)}</span>
           </Link>
 
-          <Link to="/work" className="card capsule capsule-work" {...focusProps('/work')}>
-            <img className="capsule-cover" src="/assets/home-work.webp" alt="" />
-            <span className="capsule-title">{lines(home.work)}</span>
-          </Link>
-
           <Link to="/projects" className="card capsule capsule-projects" {...focusProps('/projects')}>
             <img className="capsule-cover" src="/assets/home-projects.jpg" alt="" />
             <span className="capsule-title">{lines(home.projects)}</span>
@@ -37,6 +32,11 @@ export default function Home() {
           <Link to="/community" className="card capsule capsule-community" {...focusProps('/community')}>
             <img className="capsule-cover" src="/assets/home-community.png" alt="" />
             <span className="capsule-title">{lines(home.community)}</span>
+          </Link>
+
+          <Link to="/work" className="card capsule capsule-work" {...focusProps('/work')}>
+            <img className="capsule-cover" src="/assets/home-work.webp" alt="" />
+            <span className="capsule-title">{lines(home.work)}</span>
           </Link>
         </div>
 

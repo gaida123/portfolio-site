@@ -1,14 +1,7 @@
-/* ---------- Work: experience full width, awards stacked below ---------- */
+/* ---------- Work: experience full width, closing band under the jobs ---------- */
 .wk {
-  display: grid;
-  grid-template-columns: 1fr;
-  align-items: start;
-  align-content: start;
-}
-.wk-awards {
-  margin-top: 48px;
-  padding-top: 48px;
-  border-top: 1px solid var(--line-subtle);
+  display: flex;
+  flex-direction: column;
 }
 .wk-list {
   display: grid;
@@ -79,27 +72,28 @@
   color: var(--text-secondary);
 }
 
-/* Award: placement + year on one line, event · project under it */
-.wk-award {
-  grid-template-columns: 1fr auto;
-  row-gap: 4.5px;
-  align-items: baseline;
+/* Closing band: status + hire + wayfinding, same rhythm as the rest of the site */
+.wk-close {
+  margin-top: 48px;
+  padding-top: 36px;
+  border-top: 0.75px solid var(--line-subtle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
 }
-.wk-award h3 {
-  font: var(--type-title);
+.wk-more {
+  margin: 0;
+  font: var(--type-body);
+  color: var(--text-secondary);
+  text-align: center;
 }
-.wk-year {
-  font-variant-numeric: tabular-nums;
-}
-.wk-award .wk-sub {
-  grid-column: 1 / -1;
+.work-ctas {
+  margin-top: 0;
 }
 
 /* ---------- Below 1280px ---------- */
 @media (max-width: 1279.98px) {
-  .wk-awards {
-    margin-top: 40px;
-  }
   .wk-list {
     margin-top: 20px;
   }
@@ -135,6 +129,11 @@
     padding-bottom: 32px;
   }
   .wk-job:last-child .wk-summary {
-    padding-bottom: 0; /* awards margin-top owns the space above the rule */
+    padding-bottom: 0;
+  }
+  .wk-close {
+    margin-top: 48px;
+    padding-top: 32px;
+    gap: 16px;
   }
 }
